@@ -22,12 +22,17 @@ public class FlagService {
         this.flagRepository = flagRepository;
     }
 
-    public Flag create(UUID projectId, String key, String name) {
+    public Flag create(UUID projectId,
+                       String key,
+                       String name,
+                       String description) {
+
         Project project = projectService.getById(projectId);
 
         if (flagRepository.existsByProjectIdAndKey(projectId, key)) {
             throw new ConflictException(
-                    "A flag with key '" + key + "' already exists in this project");
+                    "A flag with key '" + key + "' already exists in this project"
+            );
         }
 
         Flag flag = new Flag(
@@ -36,6 +41,7 @@ public class FlagService {
                 project.getId(),
                 key,
                 name,
+                description,
                 false
         );
 
@@ -57,5 +63,10 @@ public class FlagService {
         Flag flag = getById(flagId);
         flag.setEnabled(enabled);
         return flagRepository.save(flag);
+    }
+
+    public void delete(UUID id) {
+        getById(id);
+        flagRepository.deleteById(id);
     }
 }

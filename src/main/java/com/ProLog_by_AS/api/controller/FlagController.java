@@ -26,16 +26,19 @@ public class FlagController {
     public Flag create(
             @PathVariable UUID projectId,
             @Valid @RequestBody CreateFlagRequest request) {
+
         return flagService.create(
                 projectId,
                 request.key(),
-                request.name()
+                request.name(),
+                request.description()
         );
     }
 
     @GetMapping("/projects/{projectId}/flags")
     public List<Flag> getAllForProject(
             @PathVariable UUID projectId) {
+
         return flagService.getAllForProject(projectId);
     }
 
@@ -48,9 +51,16 @@ public class FlagController {
     public Flag setState(
             @PathVariable UUID flagId,
             @Valid @RequestBody UpdateFlagStateRequest request) {
+
         return flagService.setEnabled(
                 flagId,
                 request.enabled()
         );
+    }
+
+    @DeleteMapping("/flags/{flagId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID flagId) {
+        flagService.delete(flagId);
     }
 }

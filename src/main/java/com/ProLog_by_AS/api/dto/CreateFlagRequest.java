@@ -12,5 +12,7 @@ public record CreateFlagRequest(
         String key,
 
         @NotBlank
-        String name
+        String name,
+
+        String description
 ) {}
